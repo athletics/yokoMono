@@ -16,12 +16,21 @@
     "url": "https://github.com/jp1971/yokoMono/issues"
   },
   "homepage": "https://github.com/jp1971/yokoMono",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "browser": {
+    "interface": "./node_modules/interface.js/build/interface.min.js"
   },
   "dependencies": {
+    "browserify": "^13.0.0",
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-watch": "^4.3.5",
+    "interface.js": "^0.3.1",
+    "lodash": "^4.6.1",
+    "lodash.assign": "^4.0.6",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
   },
-  "browserify-shim": {
-  }
+  "browserify-shim": {}
 }
