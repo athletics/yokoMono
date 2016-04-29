@@ -105,6 +105,30 @@ function amplifierGain( name, value ) {
 }
 
 /**
+ * filterFrequency
+ *
+ * @param string name
+ * @param string value
+ */
+function filterFrequency( name, value ) {
+	
+	eval( name ).frequency.value = value;
+
+}
+
+/**
+ * filterQ
+ *
+ * @param string name
+ * @param string value
+ */
+function filterQ( name, value ) {
+	
+	eval( name ).Q.value = value;
+
+}
+
+/**
  * Private Method
  *
  * @return integer
@@ -119,6 +143,9 @@ function privateMethod() {
 module.exports = {
 	init: init,
 	oscillatorDetune: oscillatorDetune,
+	oscillatorFrequency: oscillatorFrequency,
 	oscillatorType: oscillatorType,
-	amplifierGain: amplifierGain
+	amplifierGain: amplifierGain,
+	filterFrequency: filterFrequency,
+	filterQ: filterQ
 };
