@@ -69,6 +69,18 @@ function oscillatorDetune( name, value ) {
 }
 
 /**
+ * oscillatorFrequency
+ *
+ * @param string name
+ * @param string value 
+ */
+function oscillatorFrequency( name, value ) {
+	
+	eval( name ).frequency.value = value;
+
+}
+
+/**
  * oscillatorType
  *
  * @param string name
