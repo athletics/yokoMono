@@ -67,6 +67,7 @@ function init() {
 
 	var m_02 = new Interface.Menu( { 
 		bounds:[.025,.275,.075,.05],
+		css: dict,
 		options:['sine','square','sawtooth','triangle'],
 		stroke:"#666",
 		onvaluechange: function() { WebAudio.oscillatorType( 'dco02', this.value ); }
