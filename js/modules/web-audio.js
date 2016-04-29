@@ -13,7 +13,8 @@
 var dco01,
 	dco02,
 	dca01,
-	dca02
+	dca02,
+	dcf
 ;
 
 /**
@@ -33,19 +34,20 @@ function init() {
 	dco02 = audioContext.createOscillator();
 	dca01 = audioContext.createGain();
 	dca02 = audioContext.createGain();
+	dcf = audioContext.createBiquadFilter(),
 
 
 	// Connections
 	dco01.connect(dca01);
 	dco02.connect(dca02);
-	dca01.connect(DCF);
-	dca02.connect(DCF);
-	DCF.connect(audioContext.destination);
+	dca01.connect(dcf);
+	dca02.connect(dcf);
+	dcf.connect(audioContext.destination);
 
 	// Settings
 	LFO.frequency.value = 0;
-	DCF.type = 'lowpass';
-	DCF.gain = .5;
+	dcf.type = 'lowpass';
+	dcf.gain = .5;
 	dco01.frequency.value = 261.626;
 	dco02.frequency.value = 261.626;
 
