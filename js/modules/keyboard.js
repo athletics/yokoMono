@@ -21,8 +21,6 @@ function init() {
 
 	var widgets = [];
 
-	var l_01;	
-
 	var kb = new Interface.Piano( { 
 		bounds:[.05,.55,.9,.4],
 		startletter : "C",
@@ -30,8 +28,9 @@ function init() {
 		startoctave : 3,
 		endoctave : 5,
 		onvaluechange : function() { 
+			WebAudio.envelopeTrigger(); 
 			WebAudio.oscillatorFrequency( 'dco01', this.frequency); 
-			WebAudio.oscillatorFrequency( 'dco02', this.frequency); 
+			WebAudio.oscillatorFrequency( 'dco02', this.frequency);
 		}
 	} ); 
 
