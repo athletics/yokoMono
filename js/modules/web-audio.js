@@ -10,51 +10,53 @@
 /**
  * Module Vars
  */
-var dco01,
-	dco02,
+var audioContext,
 	dca01,
 	dca02,
-	dcf
+	dcf,
+	dco01,
+	dco02,
+	env
 ;
 
 /**
  * Initializes Module
  */
 function init() {
-	
+
+	// Instantiate new AudioContext
+	audioContext = new ( window.AudioContext || window.webkitAudioContext )();
+
 	// Define Modules
-	var audioContext = new (window.AudioContext || window.webkitAudioContext)(),
-		DCF = audioContext.createBiquadFilter(),
-		LFO = audioContext.createOscillator(),
-		splitter = audioContext.createChannelSplitter(2),
-		merger = audioContext.createChannelMerger(2)
+	var LFO = audioContext.createOscillator(),
+		splitter = audioContext.createChannelSplitter( 2 ),
+		merger = audioContext.createChannelMerger( 2 )
 	;
 
 	dco01 = audioContext.createOscillator();
 	dco02 = audioContext.createOscillator();
 	dca01 = audioContext.createGain();
 	dca02 = audioContext.createGain();
-	dcf = audioContext.createBiquadFilter(),
-
+	dcf = audioContext.createBiquadFilter();
 
 	// Connections
-	dco01.connect(dca01);
-	dco02.connect(dca02);
-	dca01.connect(dcf);
-	dca02.connect(dcf);
-	dcf.connect(audioContext.destination);
+	dco01.connect( dca01 );
+	// dco02.connect(dca02);
+	dca01.connect( dcf );
+	// dca02.connect(dcf);
+	dcf.connect(audioContext.destination);	
 
 	// Settings
 	LFO.frequency.value = 0;
 	dcf.type = 'lowpass';
 	dcf.gain = .5;
-	dco01.frequency.value = 261.626;
-	dco02.frequency.value = 261.626;
+	dca01.gain.value = 0;
+
 
 	// Start Oscillators
 	LFO.start(0);
 	dco01.start(0);
-	dco02.start(0);
+	// dco02.start(0);
 
 }
 
@@ -131,6 +133,22 @@ function filterQ( name, value ) {
 }
 
 /**
+ * envelopeTrigger
+ *
+ * @param string name
+ * @param string value
+ */
+function envelopeTrigger() {
+	
+	now = audioContext.currentTime;
+	dca01.gain.cancelScheduledValues(now);
+	dca01.gain.setValueAtTime(0, now);
+	dca01.gain.linearRampToValueAtTime(1, now + 1);
+	dca01.gain.linearRampToValueAtTime(0, now + 1 + 1);
+
+}
+
+/**
  * Private Method
  *
  * @return integer
@@ -149,5 +167,6 @@ module.exports = {
 	oscillatorType: oscillatorType,
 	amplifierGain: amplifierGain,
 	filterFrequency: filterFrequency,
-	filterQ: filterQ
+	filterQ: filterQ,
+	envelopeTrigger: envelopeTrigger
 };
