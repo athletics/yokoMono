@@ -272,11 +272,11 @@ function init() {
 	} );
 
 	var s_01 = new Interface.Slider({
-		bounds:[.175,.1,.03,.3],
-		min:0, max:100,
+		bounds:[.195,.1,.03,.3],
+		min:0, max:20,
 		value:0,
-		// onvaluechange: function() { WebAudio.oscillatorDetune( 'dco01', this.value ); }
-	});
+		onvaluechange: function() { WebAudio.oscillatorFrequency( 'lfo', this.value ); }
+	} );
 
 	var m_01 = new Interface.Menu( { 
 		bounds:[.150,.425,.075,.05],
@@ -286,7 +286,21 @@ function init() {
 		// onvaluechange: function() { WebAudio.oscillatorType( 'dco01', this.value ); }
 	} );
 
-	widgets.push( l_01, l_02, s_01, m_01 );
+	// Buttons
+	var b_01 = new Interface.Button( { 
+	  bounds:[.150,.3525,.025,.05], 
+	  mode:'toggle', 
+	  // label:'LFO',
+	  onvaluechange: function() {
+	    if ( this.value == 1) {
+	    	WebAudio.modulatorConnect( 'dca02.gain' );
+	    } else {
+	    	WebAudio.modulatorDisconnect();
+	    }
+	  }
+	} ); 
+
+	widgets.push( l_01, l_02, s_01, m_01, b_01 );
 
 	Panel.addWidget( widgets );
 
@@ -474,6 +488,7 @@ module.exports = {
 var audioContext,
 	dca01,
 	dca02,
+	lfo,
 	dcf,
 	dco01,
 	dco02,
@@ -491,35 +506,34 @@ function init() {
 	audioContext = new ( window.AudioContext || window.webkitAudioContext )();
 
 	// Define Modules
-	var LFO = audioContext.createOscillator(),
-		splitter = audioContext.createChannelSplitter( 2 ),
+	var splitter = audioContext.createChannelSplitter( 2 ),
 		merger = audioContext.createChannelMerger( 2 )
 	;
 
 	dco01 = audioContext.createOscillator();
 	dco02 = audioContext.createOscillator();
+	lfo = audioContext.createOscillator();
+	dcf = audioContext.createBiquadFilter();
 	dca01 = audioContext.createGain();
 	dca02 = audioContext.createGain();
-	dcf = audioContext.createBiquadFilter();
 
 	// Connections
 	dco01.connect( dca01 );
 	// dco02.connect(dca02);
-	dca01.connect( dcf );
-	// dca02.connect(dcf);
+	dca01.connect( dca02 );
+	dca02.connect(dcf);
 	dcf.connect(audioContext.destination);	
 
 	// Settings
-	LFO.frequency.value = 0;
+	lfo.frequency.value = 0;
 	dcf.type = 'lowpass';
 	dcf.gain = .5;
 	dca01.gain.value = 0;
 	attackTime = .05;
 	releaseTime = .05;
 
-
 	// Start Oscillators
-	LFO.start(0);
+	lfo.start(0);
 	dco01.start(0);
 	// dco02.start(0);
 
@@ -558,6 +572,30 @@ function oscillatorFrequency( name, value ) {
 function oscillatorType( name, type ) {
 	
 	eval( name ).type = type;
+
+}
+
+/**
+ * modulatorConnect
+ *
+ * @param string name
+ * @param string type - sine, square, sawtooth, triangle
+ */
+function modulatorConnect( name ) {
+	
+	lfo.connect( eval( name ) );
+
+}
+
+/**
+ * modulatorDisconnect
+ *
+ * @param string name
+ * @param string type - sine, square, sawtooth, triangle
+ */
+function modulatorDisconnect() {
+	
+	lfo.disconnect();
 
 }
 
@@ -649,6 +687,8 @@ module.exports = {
 	oscillatorDetune: oscillatorDetune,
 	oscillatorFrequency: oscillatorFrequency,
 	oscillatorType: oscillatorType,
+	modulatorConnect: modulatorConnect,
+	modulatorDisconnect: modulatorDisconnect,
 	amplifierGain: amplifierGain,
 	filterFrequency: filterFrequency,
 	filterQ: filterQ,

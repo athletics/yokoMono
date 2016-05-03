@@ -13,6 +13,7 @@
 var audioContext,
 	dca01,
 	dca02,
+	lfo,
 	dcf,
 	dco01,
 	dco02,
@@ -30,35 +31,34 @@ function init() {
 	audioContext = new ( window.AudioContext || window.webkitAudioContext )();
 
 	// Define Modules
-	var LFO = audioContext.createOscillator(),
-		splitter = audioContext.createChannelSplitter( 2 ),
+	var splitter = audioContext.createChannelSplitter( 2 ),
 		merger = audioContext.createChannelMerger( 2 )
 	;
 
 	dco01 = audioContext.createOscillator();
 	dco02 = audioContext.createOscillator();
+	lfo = audioContext.createOscillator();
+	dcf = audioContext.createBiquadFilter();
 	dca01 = audioContext.createGain();
 	dca02 = audioContext.createGain();
-	dcf = audioContext.createBiquadFilter();
 
 	// Connections
 	dco01.connect( dca01 );
 	// dco02.connect(dca02);
-	dca01.connect( dcf );
-	// dca02.connect(dcf);
+	dca01.connect( dca02 );
+	dca02.connect(dcf);
 	dcf.connect(audioContext.destination);	
 
 	// Settings
-	LFO.frequency.value = 0;
+	lfo.frequency.value = 0;
 	dcf.type = 'lowpass';
 	dcf.gain = .5;
 	dca01.gain.value = 0;
 	attackTime = .05;
 	releaseTime = .05;
 
-
 	// Start Oscillators
-	LFO.start(0);
+	lfo.start(0);
 	dco01.start(0);
 	// dco02.start(0);
 
@@ -97,6 +97,30 @@ function oscillatorFrequency( name, value ) {
 function oscillatorType( name, type ) {
 	
 	eval( name ).type = type;
+
+}
+
+/**
+ * modulatorConnect
+ *
+ * @param string name
+ * @param string type - sine, square, sawtooth, triangle
+ */
+function modulatorConnect( name ) {
+	
+	lfo.connect( eval( name ) );
+
+}
+
+/**
+ * modulatorDisconnect
+ *
+ * @param string name
+ * @param string type - sine, square, sawtooth, triangle
+ */
+function modulatorDisconnect() {
+	
+	lfo.disconnect();
 
 }
 
@@ -188,6 +212,8 @@ module.exports = {
 	oscillatorDetune: oscillatorDetune,
 	oscillatorFrequency: oscillatorFrequency,
 	oscillatorType: oscillatorType,
+	modulatorConnect: modulatorConnect,
+	modulatorDisconnect: modulatorDisconnect,
 	amplifierGain: amplifierGain,
 	filterFrequency: filterFrequency,
 	filterQ: filterQ,

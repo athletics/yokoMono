@@ -42,11 +42,11 @@ function init() {
 	} );
 
 	var s_01 = new Interface.Slider({
-		bounds:[.175,.1,.03,.3],
-		min:0, max:100,
+		bounds:[.195,.1,.03,.3],
+		min:0, max:20,
 		value:0,
-		// onvaluechange: function() { WebAudio.oscillatorDetune( 'dco01', this.value ); }
-	});
+		onvaluechange: function() { WebAudio.oscillatorFrequency( 'lfo', this.value ); }
+	} );
 
 	var m_01 = new Interface.Menu( { 
 		bounds:[.150,.425,.075,.05],
@@ -56,22 +56,21 @@ function init() {
 		// onvaluechange: function() { WebAudio.oscillatorType( 'dco01', this.value ); }
 	} );
 
-
 	// Buttons
 	var b_01 = new Interface.Button( { 
-	  bounds:[.150,.4,.025,.05], 
+	  bounds:[.150,.3525,.025,.05], 
 	  mode:'toggle', 
 	  // label:'LFO',
 	  onvaluechange: function() {
-	    // if ( this.value == 1) {
-	    //   LFO.connect(DCA.gain);
-	    // } else {
-	    //   LFO.disconnect();
-	    // }
-	  },
-	}); 
+	    if ( this.value == 1) {
+	    	WebAudio.modulatorConnect( 'dca02.gain' );
+	    } else {
+	    	WebAudio.modulatorDisconnect();
+	    }
+	  }
+	} ); 
 
-	widgets.push( l_01, l_02, s_01, m_01 );
+	widgets.push( l_01, l_02, s_01, m_01, b_01 );
 
 	Panel.addWidget( widgets );
 
