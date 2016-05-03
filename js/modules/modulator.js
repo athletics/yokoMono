@@ -56,6 +56,21 @@ function init() {
 		// onvaluechange: function() { WebAudio.oscillatorType( 'dco01', this.value ); }
 	} );
 
+
+	// Buttons
+	var b_01 = new Interface.Button( { 
+	  bounds:[.150,.4,.025,.05], 
+	  mode:'toggle', 
+	  // label:'LFO',
+	  onvaluechange: function() {
+	    // if ( this.value == 1) {
+	    //   LFO.connect(DCA.gain);
+	    // } else {
+	    //   LFO.disconnect();
+	    // }
+	  },
+	}); 
+
 	widgets.push( l_01, l_02, s_01, m_01 );
 
 	Panel.addWidget( widgets );
