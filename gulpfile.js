@@ -15,10 +15,10 @@ var customOpts = {
 		debug: true
 	},
 	opts = assign( {}, watchify.args, customOpts ),
-	b = watchify( browserify( opts ) )
+	b = watchify( browserify( opts ), {poll:100} )
 ; 
 
-gulp.task( 'browserify', function() {
+gulp.task( 'bundle', function() {
 
 	return b.bundle()
 	// log errors if they happen
@@ -35,7 +35,7 @@ gulp.task( 'browserify', function() {
 } );
 
 gulp.task( 'watch', function () {
-	gulp.watch( 'js/**/*.js', [ 'browserify' ] );
+	gulp.watch( 'js/**/*.js', [ 'bundle' ] );
 } );
 
-gulp.task( 'default', [ 'browserify', 'watch' ] );
+gulp.task( 'default', [ 'bundle', 'watch' ] );
