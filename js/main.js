@@ -4,6 +4,7 @@ var Panel = require( './modules/panel' );
 var Oscillator = require( './modules/oscillator' );
 var Modulator = require( './modules/modulator' );
 var Filter = require( './modules/filter' );
+var Envelope = require( './modules/envelope' );
 var Keyboard = require( './modules/keyboard' );
 
 // Initialize modules 
@@ -12,4 +13,5 @@ Panel.init();
 Oscillator.init();
 Modulator.init();
 Filter.init();
+Envelope.init();
 Keyboard.init();

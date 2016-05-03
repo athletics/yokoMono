@@ -16,7 +16,9 @@ var audioContext,
 	dcf,
 	dco01,
 	dco02,
-	env
+	env,
+	attackTime,
+	releaseTime
 ;
 
 /**
@@ -51,6 +53,8 @@ function init() {
 	dcf.type = 'lowpass';
 	dcf.gain = .5;
 	dca01.gain.value = 0;
+	attackTime = .05;
+	releaseTime = .05;
 
 
 	// Start Oscillators
@@ -134,17 +138,36 @@ function filterQ( name, value ) {
 
 /**
  * envelopeTrigger
- *
- * @param string name
- * @param string value
  */
 function envelopeTrigger() {
 	
 	now = audioContext.currentTime;
-	dca01.gain.cancelScheduledValues(now);
-	dca01.gain.setValueAtTime(0, now);
-	dca01.gain.linearRampToValueAtTime(1, now + 1);
-	dca01.gain.linearRampToValueAtTime(0, now + 1 + 1);
+	dca01.gain.cancelScheduledValues( now );
+	dca01.gain.setValueAtTime( 0, now );
+	dca01.gain.linearRampToValueAtTime( 1, now + attackTime );
+	dca01.gain.linearRampToValueAtTime( 0, now + attackTime + releaseTime );
+
+}
+
+/**
+ * envelopeAttack
+ * 
+ * @param string value
+ */
+function envelopeAttack( value) {
+	
+	attackTime = value;
+
+}
+
+/**
+ * envelopeRelease
+ *
+ * @param string value
+ */
+function envelopeRelease( value) {
+	
+	releaseTime = value;
 
 }
 
@@ -168,5 +191,7 @@ module.exports = {
 	amplifierGain: amplifierGain,
 	filterFrequency: filterFrequency,
 	filterQ: filterQ,
-	envelopeTrigger: envelopeTrigger
+	envelopeTrigger: envelopeTrigger,
+	envelopeAttack: envelopeAttack,
+	envelopeRelease: envelopeRelease
 };
