@@ -43,12 +43,18 @@ function init() {
 	} );
 
 	var l_03 = new Interface.Label( {
+		bounds:[.1425,.245,.040,.05],
+		font: 'Courier',
+		size:12,
+		value:'VCA/VCF'
+	} );
+
+	var l_04 = new Interface.Label( {
 		bounds:[.145,.325,.035,.05],
 		font: 'Courier',
 		size:12,
-		value:'On/Off'
+		value:'Off/On'
 	} );
-
 
 	// Sliders
 	var s_01 = new Interface.Slider({
@@ -69,9 +75,22 @@ function init() {
 
 	// Buttons
 	var b_01 = new Interface.Button( { 
+	  bounds:[.150,.2725,.025,.05], 
+	  mode:'toggle', 
+	  onvaluechange: function() {
+	    if ( this.value == 1) {
+	    	// WebAudio.modulatorDisconnect();
+	    	// WebAudio.modulatorConnect();
+	    } else {
+	    	// WebAudio.modulatorDisconnect();
+	    }
+	  }
+	} ); 
+
+	// Buttons
+	var b_02 = new Interface.Button( { 
 	  bounds:[.150,.3525,.025,.05], 
 	  mode:'toggle', 
-	  // label:'LFO',
 	  onvaluechange: function() {
 	    if ( this.value == 1) {
 	    	WebAudio.modulatorConnect( 'dca02.gain' );
@@ -81,7 +100,7 @@ function init() {
 	  }
 	} ); 
 
-	widgets.push( l_01, l_02, l_03, s_01, m_01, b_01 );
+	widgets.push( l_01, l_02, l_04, s_01, m_01, b_02 );
 
 	Panel.addWidget( widgets );
 
