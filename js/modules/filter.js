@@ -65,9 +65,9 @@ function init() {
 	var m_01 = new Interface.Menu( { 
 		bounds:[.275,.425,.075,.05],
 		css: dict,
-		options:['lopass','band'],
+		options:['lowpass','highpass'],
 		stroke:"#666",
-		// onvaluechange: function() { WebAudio.oscillatorType( 'dco01', this.value ); }
+		onvaluechange: function() { WebAudio.filterType( this.value ); }
 	} );
 
 	widgets.push( l_01, l_02, l_03, s_01, s_02, m_01 );
