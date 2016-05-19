@@ -1,3 +1,7 @@
+body {
+	background-color: rgb(102, 102, 102);
+}
+
 img.logo {
 
 	position: absolute;
@@ -11,5 +15,6 @@ div.synth {
 
 	width:1280px;
 	height:680px;
+	margin: 0 auto;
 
 }
