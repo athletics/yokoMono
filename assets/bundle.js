@@ -161,9 +161,9 @@ function init() {
 	var m_01 = new Interface.Menu( { 
 		bounds:[.275,.425,.075,.05],
 		css: dict,
-		options:['lopass','band'],
+		options:['lowpass','highpass'],
 		stroke:"#666",
-		// onvaluechange: function() { WebAudio.oscillatorType( 'dco01', this.value ); }
+		onvaluechange: function() { WebAudio.filterType( this.value ); }
 	} );
 
 	widgets.push( l_01, l_02, l_03, s_01, s_02, m_01 );
@@ -256,6 +256,7 @@ function init() {
 	  'text-transform': 'capitalize'
 	};
 
+	// Labels
 	var l_01 = new Interface.Label( {
 		bounds:[.125,.025,.125,.05],
 		font: 'Courier',
@@ -271,6 +272,21 @@ function init() {
 		value:'Rate'
 	} );
 
+	var l_03 = new Interface.Label( {
+		bounds:[.1425,.245,.040,.05],
+		font: 'Courier',
+		size:12,
+		value:'VCA/VCF'
+	} );
+
+	var l_04 = new Interface.Label( {
+		bounds:[.145,.325,.035,.05],
+		font: 'Courier',
+		size:12,
+		value:'Off/On'
+	} );
+
+	// Sliders
 	var s_01 = new Interface.Slider({
 		bounds:[.195,.1,.03,.3],
 		min:0, max:20,
@@ -278,19 +294,33 @@ function init() {
 		onvaluechange: function() { WebAudio.oscillatorFrequency( 'lfo', this.value ); }
 	} );
 
+	// Menus
 	var m_01 = new Interface.Menu( { 
 		bounds:[.150,.425,.075,.05],
 		css: dict,
 		options:['square','triangle'],
 		stroke:"#666",
-		// onvaluechange: function() { WebAudio.oscillatorType( 'dco01', this.value ); }
+		onvaluechange: function() { WebAudio.oscillatorType( 'lfo', this.value ); }
 	} );
 
 	// Buttons
 	var b_01 = new Interface.Button( { 
+	  bounds:[.150,.2725,.025,.05], 
+	  mode:'toggle', 
+	  onvaluechange: function() {
+	    if ( this.value == 1) {
+	    	// WebAudio.modulatorDisconnect();
+	    	// WebAudio.modulatorConnect();
+	    } else {
+	    	// WebAudio.modulatorDisconnect();
+	    }
+	  }
+	} ); 
+
+	// Buttons
+	var b_02 = new Interface.Button( { 
 	  bounds:[.150,.3525,.025,.05], 
 	  mode:'toggle', 
-	  // label:'LFO',
 	  onvaluechange: function() {
 	    if ( this.value == 1) {
 	    	WebAudio.modulatorConnect( 'dca02.gain' );
@@ -300,7 +330,7 @@ function init() {
 	  }
 	} ); 
 
-	widgets.push( l_01, l_02, s_01, m_01, b_01 );
+	widgets.push( l_01, l_02, l_04, s_01, m_01, b_02 );
 
 	Panel.addWidget( widgets );
 
@@ -403,7 +433,7 @@ function init() {
 		label:'Amount',
 		min:0, max:1,
 	  	value:1,
-		onvaluechange: function() { WebAudio.amplifierGain( 'dca02', this.value ); }
+		onvaluechange: function() { WebAudio.amplifierGain( 'mix02', this.value ); }
 	} );
 
 	widgets.push( l_01, l_02, l_03, m_01, m_02, s_01,s_02, s_03 );
@@ -506,26 +536,27 @@ function init() {
 	audioContext = new ( window.AudioContext || window.webkitAudioContext )();
 
 	// Define Modules
-	var splitter = audioContext.createChannelSplitter( 2 ),
-		merger = audioContext.createChannelMerger( 2 )
-	;
-
 	dco01 = audioContext.createOscillator();
 	dco02 = audioContext.createOscillator();
 	lfo = audioContext.createOscillator();
 	dcf = audioContext.createBiquadFilter();
 	dca01 = audioContext.createGain();
 	dca02 = audioContext.createGain();
+	mix01 = audioContext.createGain();
+	mix02 = audioContext.createGain();
 
 	// Connections
-	dco01.connect( dca01 );
-	// dco02.connect(dca02);
+	dco01.connect( mix01 );
+	dco02.connect( mix02 );
+	mix01.connect( dca01 );
+	mix02.connect( dca01 );
 	dca01.connect( dca02 );
-	dca02.connect(dcf);
-	dcf.connect(audioContext.destination);	
+	dca02.connect( dcf );
+	dcf.connect( audioContext.destination );	
 
 	// Settings
 	lfo.frequency.value = 0;
+	lfo.type = 'square';
 	dcf.type = 'lowpass';
 	dcf.gain = .5;
 	dca01.gain.value = 0;
@@ -533,9 +564,9 @@ function init() {
 	releaseTime = .05;
 
 	// Start Oscillators
-	lfo.start(0);
-	dco01.start(0);
-	// dco02.start(0);
+	lfo.start( 0 );
+	dco01.start( 0 );
+	dco02.start( 0 );
 
 }
 
@@ -579,7 +610,6 @@ function oscillatorType( name, type ) {
  * modulatorConnect
  *
  * @param string name
- * @param string type - sine, square, sawtooth, triangle
  */
 function modulatorConnect( name ) {
 	
@@ -589,9 +619,6 @@ function modulatorConnect( name ) {
 
 /**
  * modulatorDisconnect
- *
- * @param string name
- * @param string type - sine, square, sawtooth, triangle
  */
 function modulatorDisconnect() {
 	
@@ -632,6 +659,18 @@ function filterFrequency( name, value ) {
 function filterQ( name, value ) {
 	
 	eval( name ).Q.value = value;
+
+}
+
+/**
+ * filterQ
+ *
+ * @param string name
+ * @param string value
+ */
+function filterType( value ) {
+	
+	dcf.type = value;
 
 }
 
@@ -692,6 +731,7 @@ module.exports = {
 	amplifierGain: amplifierGain,
 	filterFrequency: filterFrequency,
 	filterQ: filterQ,
+	filterType: filterType,
 	envelopeTrigger: envelopeTrigger,
 	envelopeAttack: envelopeAttack,
 	envelopeRelease: envelopeRelease
