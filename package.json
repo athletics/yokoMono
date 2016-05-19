@@ -29,6 +29,7 @@
     "interface.js": "^0.3.1",
     "lodash": "^4.6.1",
     "lodash.assign": "^4.0.6",
+    "tunajs": "^0.4.4",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
