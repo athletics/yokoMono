@@ -88,7 +88,7 @@ function init() {
 		label:'Amount',
 		min:0, max:1,
 	  	value:1,
-		onvaluechange: function() { WebAudio.amplifierGain( 'dca02', this.value ); }
+		onvaluechange: function() { WebAudio.amplifierGain( 'mix02', this.value ); }
 	} );
 
 	widgets.push( l_01, l_02, l_03, m_01, m_02, s_01,s_02, s_03 );
