@@ -31,26 +31,27 @@ function init() {
 	audioContext = new ( window.AudioContext || window.webkitAudioContext )();
 
 	// Define Modules
-	var splitter = audioContext.createChannelSplitter( 2 ),
-		merger = audioContext.createChannelMerger( 2 )
-	;
-
 	dco01 = audioContext.createOscillator();
 	dco02 = audioContext.createOscillator();
 	lfo = audioContext.createOscillator();
 	dcf = audioContext.createBiquadFilter();
 	dca01 = audioContext.createGain();
 	dca02 = audioContext.createGain();
+	mix01 = audioContext.createGain();
+	mix02 = audioContext.createGain();
 
 	// Connections
-	dco01.connect( dca01 );
-	// dco02.connect(dca02);
+	dco01.connect( mix01 );
+	dco02.connect( mix02 );
+	mix01.connect( dca01 );
+	mix02.connect( dca01 );
 	dca01.connect( dca02 );
-	dca02.connect(dcf);
-	dcf.connect(audioContext.destination);	
+	dca02.connect( dcf );
+	dcf.connect( audioContext.destination );	
 
 	// Settings
 	lfo.frequency.value = 0;
+	lfo.type = 'square';
 	dcf.type = 'lowpass';
 	dcf.gain = .5;
 	dca01.gain.value = 0;
@@ -58,9 +59,9 @@ function init() {
 	releaseTime = .05;
 
 	// Start Oscillators
-	lfo.start(0);
-	dco01.start(0);
-	// dco02.start(0);
+	lfo.start( 0 );
+	dco01.start( 0 );
+	dco02.start( 0 );
 
 }
 
@@ -104,7 +105,6 @@ function oscillatorType( name, type ) {
  * modulatorConnect
  *
  * @param string name
- * @param string type - sine, square, sawtooth, triangle
  */
 function modulatorConnect( name ) {
 	
@@ -114,9 +114,6 @@ function modulatorConnect( name ) {
 
 /**
  * modulatorDisconnect
- *
- * @param string name
- * @param string type - sine, square, sawtooth, triangle
  */
 function modulatorDisconnect() {
 	
@@ -157,6 +154,18 @@ function filterFrequency( name, value ) {
 function filterQ( name, value ) {
 	
 	eval( name ).Q.value = value;
+
+}
+
+/**
+ * filterQ
+ *
+ * @param string name
+ * @param string value
+ */
+function filterType( value ) {
+	
+	dcf.type = value;
 
 }
 
@@ -217,6 +226,7 @@ module.exports = {
 	amplifierGain: amplifierGain,
 	filterFrequency: filterFrequency,
 	filterQ: filterQ,
+	filterType: filterType,
 	envelopeTrigger: envelopeTrigger,
 	envelopeAttack: envelopeAttack,
 	envelopeRelease: envelopeRelease
