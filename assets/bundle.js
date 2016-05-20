@@ -121,7 +121,8 @@ function init() {
 	var dict = {
 	  'border-radius': '0px',
 	  'font-family': 'Courier',
-	  'text-transform': 'capitalize'
+	  'text-transform': 'capitalize',
+	  'outline': 'none'
 	};
 
 	var l_01 = new Interface.Label( {
@@ -282,7 +283,8 @@ function init() {
 	var dict = {
 	  'border-radius': '0px',
 	  'font-family': 'Courier',
-	  'text-transform': 'capitalize'
+	  'text-transform': 'capitalize',
+	  'outline': 'none'
 	};
 
 	// Labels
@@ -397,7 +399,8 @@ function init() {
 	var dict = {
 	  'border-radius': '0px',
 	  'font-family': 'Courier',
-	  'text-transform': 'capitalize'
+	  'text-transform': 'capitalize',
+	  'outline': 'none'
 	};
 
 	var l_01 = new Interface.Label( {
