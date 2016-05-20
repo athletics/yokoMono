@@ -1,11 +1,12 @@
 /**
  * web-audio.js
- * @description Brief Description
+ * @description The web audio API components for yokoMono
  */
 
 /**
  * Module Dependencies
  */
+var WhiteNoise = require( './noise' );
 
 /**
  * Module Vars
@@ -39,6 +40,8 @@ function init() {
 	dca02 = audioContext.createGain();
 	mix01 = audioContext.createGain();
 	mix02 = audioContext.createGain();
+	whiteNoise = WhiteNoise.init( audioContext );
+
 
 	// Connections
 	dco01.connect( mix01 );
@@ -47,6 +50,7 @@ function init() {
 	mix02.connect( dca01 );
 	dca01.connect( dca02 );
 	dca02.connect( dcf );
+	// whiteNoise.connect( dca01 );
 	dcf.connect( audioContext.destination );	
 
 	// Settings
@@ -187,7 +191,7 @@ function envelopeTrigger() {
  * 
  * @param string value
  */
-function envelopeAttack( value) {
+function envelopeAttack( value ) {
 	
 	attackTime = value;
 
@@ -198,7 +202,7 @@ function envelopeAttack( value) {
  *
  * @param string value
  */
-function envelopeRelease( value) {
+function envelopeRelease( value ) {
 	
 	releaseTime = value;
 
