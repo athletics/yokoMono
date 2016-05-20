@@ -43,7 +43,7 @@ function init() {
 
 	var s_01 = new Interface.Slider({
 		bounds:[.275,.1,.03,.3],
-		min:0, max:100,
+		min:0, max:20,
 		value:0,
 		onvaluechange: function() { WebAudio.filterQ( 'dcf', this.value ); }
 	} );
