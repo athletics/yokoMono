@@ -8,3 +8,13 @@ div.synth {
 	height:680px;
 
 }
+
+iframe {
+
+	border: none;
+	display: block;
+	margin: 0 auto; 
+	width: 1300px;
+	height:700px;
+
+}
