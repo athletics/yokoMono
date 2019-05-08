@@ -1,0 +1,20 @@
+body {
+	background-color: rgb(102, 102, 102);
+}
+
+div.synth {
+
+	width:1280px;
+	height:680px;
+
+}
+
+iframe {
+
+	border: none;
+	display: block;
+	margin: 0 auto; 
+	width: 1300px;
+	height:700px;
+
+}
