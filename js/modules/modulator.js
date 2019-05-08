@@ -62,7 +62,11 @@ function init() {
 		bounds:[.195,.1,.03,.3],
 		min:0, max:20,
 		value:0,
-		onvaluechange: function() { WebAudio.oscillatorFrequency( 'lfo', this.value ); }
+		onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.oscillatorFrequency( 'lfo', this.value );
+			}
+		}
 	} );
 
 	// Menus

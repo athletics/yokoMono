@@ -8,6 +8,7 @@
   */
  var Interface = require( 'interface' );
  var Panel = require( './panel' );
+ var WebAudio = require( './web-audio' );
 
 /**
  * Initializes Module
@@ -23,6 +24,7 @@ function init() {
 		context.drawImage( base_image, 933, 20 );
 	}
 
+    // Labels
 	var l_01 = new Interface.Label( {
 		bounds:[.74,.19,.22,.05],
 		font: 'Courier',
@@ -32,7 +34,31 @@ function init() {
 
 	} );
 
-	widgets.push( l_01 );
+	var l_02 = new Interface.Label( {
+		bounds:[.92,.4,.035,.05],
+		font: 'Courier',
+		size:12,
+		value:'Off/On'
+	} );
+
+	// Buttons
+	var b_01 = new Interface.Button( { 
+		bounds:[.925,.425,.025,.05], 
+		mode:'toggle', 
+		onvaluechange: function() {
+			if ( this.value == 1 ) {
+				if ( WebAudio.state() == 'uninit' ) {
+					WebAudio.init();
+				} else if ( WebAudio.state() == 'suspended' ) {
+					WebAudio.on();
+				}
+			} else {
+				WebAudio.off();
+			}
+		}
+	} ); 
+
+	widgets.push( l_01, l_02, b_01 );
 
 	Panel.addWidget( widgets );
 }

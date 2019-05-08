@@ -28,9 +28,11 @@ function init() {
 		startoctave : 3,
 		endoctave : 5,
 		onvaluechange : function() { 
-			WebAudio.envelopeTrigger(); 
-			WebAudio.oscillatorFrequency( 'dco01', this.frequency); 
-			WebAudio.oscillatorFrequency( 'dco02', this.frequency);
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.envelopeTrigger(); 
+				WebAudio.oscillatorFrequency( 'dco01', this.frequency); 
+				WebAudio.oscillatorFrequency( 'dco02', this.frequency);			
+			}
 		}
 	} ); 
 

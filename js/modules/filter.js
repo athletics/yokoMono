@@ -46,7 +46,11 @@ function init() {
 		bounds:[.275,.1,.03,.3],
 		min:0, max:20,
 		value:0,
-		onvaluechange: function() { WebAudio.filterQ( 'dcf', this.value ); }
+		onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.filterQ( 'dcf', this.value );
+			}
+		}
 	} );
 
 	var l_03 = new Interface.Label( {
@@ -60,7 +64,11 @@ function init() {
 		bounds:[.31875,.1,.03,.3],
 		min:0, max:1000,
 		value:0,
-		onvaluechange: function() { WebAudio.filterFrequency( 'dcf', this.value ); }
+		onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.filterFrequency( 'dcf', this.value );
+			}
+		}
 	} );
 
 	var m_01 = new Interface.Menu( { 
@@ -68,7 +76,11 @@ function init() {
 		css: dict,
 		options:['lowpass','highpass'],
 		stroke:"#666",
-		onvaluechange: function() { WebAudio.filterType( this.value ); }
+		onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.filterType( this.value );
+			}
+		}
 	} );
 
 	widgets.push( l_01, l_02, l_03, s_01, s_02, m_01 );

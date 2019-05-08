@@ -45,7 +45,11 @@ function init() {
 		bounds:[.4,.1,.03,.3],
 		min:.05, max:2,
 		value:.05,
-		onvaluechange: function() { WebAudio.envelopeAttack( this.value ); }
+		onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.envelopeAttack( this.value ); 
+			}
+		}
 	} );
 
 	var l_03 = new Interface.Label( {
@@ -59,7 +63,11 @@ function init() {
 		bounds:[.44375,.1,.03,.3],
 		min:.05, max:2,
 		value:.05,
-		onvaluechange: function() { WebAudio.envelopeRelease( this.value ); }
+		onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.envelopeRelease( this.value );
+			}
+		}
 	} );
 
 	widgets.push( l_01, l_02, l_03, s_01, s_02 );
