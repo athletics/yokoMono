@@ -70,6 +70,41 @@ function init() {
 }
 
 /**
+ * Suspends context
+ */
+function on() {
+ 	 	 
+	audioContext.resume();
+	
+}
+
+/**
+ * Suspends context
+ */
+function off() {
+ 	 	 
+	audioContext.suspend();
+	
+}
+
+/**
+ * Returns state
+ */
+function state() {
+
+	if ( audioContext ) {
+ 	 	 
+		return audioContext.state;
+
+	} else {
+
+		return 'uninit';
+
+	}
+	
+}
+
+/**
  * oscillatorDetune
  *
  * @param string name
@@ -222,6 +257,9 @@ function privateMethod() {
  */
 module.exports = {
 	init: init,
+	on: on,
+	off: off,
+	state: state,
 	oscillatorDetune: oscillatorDetune,
 	oscillatorFrequency: oscillatorFrequency,
 	oscillatorType: oscillatorType,

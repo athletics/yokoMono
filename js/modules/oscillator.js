@@ -47,7 +47,11 @@ function init() {
 		css: dict,
 		options:['sine','square','sawtooth','triangle'],
 		stroke:"#666",
-		onvaluechange: function() { WebAudio.oscillatorType( 'dco01', this.value ); }
+		onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.oscillatorType( 'dco01', this.value );
+			}
+		}
 	} );
 
 	var s_01 = new Interface.Slider({
@@ -56,7 +60,11 @@ function init() {
 		label:'Detune',
 		min:0, max:100,
 		value:0,
-		onvaluechange: function() { WebAudio.oscillatorDetune( 'dco01', this.value ); }
+		onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.oscillatorDetune( 'dco01', this.value );
+			}
+		}
 	});
 
 	var l_03 = new Interface.Label( {
@@ -71,7 +79,11 @@ function init() {
 		css: dict,
 		options:['sine','square','sawtooth','triangle'],
 		stroke:"#666",
-		onvaluechange: function() { WebAudio.oscillatorType( 'dco02', this.value ); }
+		onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.oscillatorType( 'dco02', this.value );
+			}
+		}
 	} );
 
 	var s_02 = new Interface.Slider( {
@@ -80,7 +92,11 @@ function init() {
 	 	label:'Detune',
 	 	min:0, max:100,
 	  	value:0,
-	  	onvaluechange: function() { WebAudio.oscillatorDetune( 'dco02', this.value ); }
+	  	onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.oscillatorDetune( 'dco02', this.value );
+			}
+		  }
 	} );
 
 	var s_03 = new Interface.Slider({
@@ -89,7 +105,11 @@ function init() {
 		label:'Amount',
 		min:0, max:1,
 	  	value:1,
-		onvaluechange: function() { WebAudio.amplifierGain( 'mix02', this.value ); }
+		onvaluechange: function() { 
+			if ( WebAudio.state() != 'uninit' ) {
+				WebAudio.amplifierGain( 'mix02', this.value );
+			}
+		}
 	} );
 
 	widgets.push( l_01, l_02, l_03, m_01, m_02, s_01,s_02, s_03 );

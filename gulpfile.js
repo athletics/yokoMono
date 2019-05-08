@@ -30,7 +30,7 @@ gulp.task( 'bundle', function() {
 	.pipe( sourcemaps.init( { loadMaps: true } ) ) // loads map from browserify file
 	// Add transformation tasks to the pipeline here.
 	.pipe( sourcemaps.write( './' ) ) // writes .map file
-	.pipe( gulp.dest( './assets' ) );
+	.pipe( gulp.dest( './public/assets' ) );
 
 } );
 

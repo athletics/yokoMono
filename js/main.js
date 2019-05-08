@@ -9,7 +9,7 @@ var Keyboard = require( './modules/keyboard' );
 var Logo = require( './modules/logo' );
 
 // Initialize modules 
-WebAudio.init();
+// WebAudio.init();
 Panel.init();
 Oscillator.init();
 Modulator.init();
